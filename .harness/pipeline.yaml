@@ -1,0 +1,48 @@
+pipeline:
+  name: Harness-basic-cicd
+  identifier: Harnessbasiccicd
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: saimonpranta
+        repoName: harness-cicd
+        build: <+input>
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: MacOS
+            arch: Arm64
+          runtime:
+            type: Docker
+            spec:
+              harnessImageConnectorRef: account.harnessImage
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: npm install
+                  identifier: npm_install
+                  spec:
+                    shell: Bash
+                    command: npm install
+              - step:
+                  type: Run
+                  name: start app
+                  identifier: start_app
+                  spec:
+                    shell: Bash
+                    command: node index.js

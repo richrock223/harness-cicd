@@ -1,0 +1,36 @@
+pipeline:
+  name: Node Hello Pipeline
+  identifier: node_hello_pipeline
+  projectIdentifier: default_project
+  orgIdentifier: default
+  stages:
+    - stage:
+        name: Build
+        identifier: build_stage
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: Cloud
+            spec:
+              connectorRef: account.harnessImage
+              image: node:18
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install Dependencies
+                  identifier: install
+                  spec:
+                    shell: Bash
+                    command: |
+                      npm install
+
+              - step:
+                  type: Run
+                  name: Run App
+                  identifier: run
+                  spec:
+                    shell: Bash
+                    command: |
+                      node index.js
