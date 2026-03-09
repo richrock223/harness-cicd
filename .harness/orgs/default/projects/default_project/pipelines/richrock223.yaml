@@ -1,0 +1,48 @@
+pipeline:
+  name: richrock223
+  identifier: richrock223
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: richrock223
+        repoName: harness-cicd
+        build: <+input>
+  stages:
+    - stage:
+        name: Build and Start
+        identifier: Build_and_Start
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec:
+              harnessImageConnectorRef: account.harnessImage
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: npm install
+                  identifier: npm_install
+                  spec:
+                    shell: Bash
+                    command: npm install
+              - step:
+                  type: Run
+                  name: npm start
+                  identifier: npm_start
+                  spec:
+                    shell: Bash
+                    command: npm start
